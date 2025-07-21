@@ -1,0 +1,72 @@
+---
+services:
+  wallet-backend:
+    # image: wallet-backend-server:${WWALLET_BACKEND_TAG:-v0.2.9}
+    build:
+      context: https://github.com/Didr/wallet-backend-server.git#allow-envvar-config
+      # https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
+      # context: build/wallet-backend-server
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./config.js:/app/dist/config/index.js:ro
+      - ./keys:/app/keys:ro
+    ports:
+      - 127.0.0.1:8002:8002
+    depends_on:
+      wallet-backend_db:
+        condition: service_healthy
+    networks:
+      - wallet-backend_db_net
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import http.client, json; conn = http.client.HTTPConnection('localhost', 8002); conn.request('GET', '/status'); res = conn.getresponse(); data = res.read().decode(); print(data); exit(0 if json.loads(data)['status'] == 'ok' else 1)"]
+      interval: 30s
+      start_period: 10s
+      timeout: 5s
+      retries: 3
+
+  wallet-backend_db:
+    image: mariadb:lts
+    environment:
+      - MARIADB_DATABASE=${WALLET_BACKEND_DATABASE:-wallet}
+      - MARIADB_USER=${WALLET_BACKEND_USER:-wallet}
+      - MARIADB_PASSWORD=${WALLET_BACKEND_PASSWORD:-wallet}
+      - MARIADB_RANDOM_ROOT_PASSWORD=${WALLET_BACKEND_RANDOM_ROOT_PASSWORD:-1}
+    volumes:
+      - wallet-backend_db:/var/lib/mysql
+    networks:
+      - wallet-backend_db_net
+    healthcheck: # https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/installing-mariadb/binary-packages/automated-mariadb-deployment-and-administration/docker-and-mariadb/using-healthcheck-sh
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  wallet-backend_db_inject_verifier_issuer:
+    image: mariadb:lts
+    environment:
+      - MARIADB_DATABASE=${WALLET_BACKEND_DATABASE:-wallet}
+      - MARIADB_USER=${WALLET_BACKEND_USER:-wallet}
+      - MARIADB_PASSWORD=${WALLET_BACKEND_PASSWORD:-wallet}
+      - MARIADB_RANDOM_ROOT_PASSWORD=${WALLET_BACKEND_RANDOM_ROOT_PASSWORD:-1}
+      - WALLET_BACKEND_TRUSTED_ROOT=${WALLET_BACKEND_TRUSTED_ROOT:-MIICMzCCAdqgAwIBAgIUdgESbTG9nxSXVImFdFHHAHGJ9RwwCgYIKoZIzj0EAwIwIDERMA8GA1UEAwwId3dXYWxsZXQxCzAJBgNVBAYTAkdSMB4XDTI1MDMwNjE1MzczM1oXDTM1MDMwNDE1MzczM1owIDERMA8GA1UEAwwId3dXYWxsZXQxCzAJBgNVBAYTAkdSMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0Fm2MNVdwcARMDwXVaNJwcy1G182BhnFhv7pDmqs4EFGlPvkG9oA02gBKeddJd7wcngcIH1cbpS64iG4r9d5R6OB8TCB7jASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUfHj4bzyvo4unHysGt+pNa0XsBaIwHwYDVR0jBBgwFoAUfHj4bzyvo4unHysGt+pNa0XsBaIwOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL3VzZXJzLnVvYS5nci9+cHN0YW1hdG9wL2NhLWNybC5wZW0wIAYDVR0RBBkwF4YVaHR0cDovL3d3dy53YWxsZXQub3JnMCoGA1UdEgQjMCGGFWh0dHA6Ly93d3cud2FsbGV0LmNvbYIId3dXYWxsZXQwCgYIKoZIzj0EAwIDRwAwRAIgGMfgLwOXvEk0sD3nEtCuwkZRzX9vyYZ/hfg6VPrJszACIHBsYf7toXfUFjr6y1nAJ/oXP9l/fWBDydcQIq+Vnfem}
+      - WALLET_ISSUER_URL=${WALLET_ISSUER_URL:-https://issuer.localhost}
+      - WALLET_VERIFIER_URL=${WALLET_VERIFIER_URL:-https://verifier.localhost}
+    networks:
+      - wallet-backend_db_net
+    volumes:
+      - ./init-sql.sh:/init-sql.sh
+    entrypoint: "bash /init-sql.sh" 
+    depends_on:
+      wallet-backend:
+          condition: service_healthy
+      wallet-backend_db:
+          condition: service_healthy
+
+volumes:
+  wallet-backend_db:
+
+networks:
+  wallet-backend_db_net:
+    internal: true

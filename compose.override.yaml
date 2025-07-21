@@ -1,0 +1,29 @@
+---
+services:
+  caddy:
+    ports: !override
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    networks:
+      - default
+      - proxy_net
+
+  wallet-frontend:
+    networks:
+      - proxy_net
+  wallet-backend:
+    networks:
+      - proxy_net 
+
+  wallet-issuer:
+    networks:
+      - proxy_net 
+
+  wallet-verifier:
+    networks:
+      - proxy_net 
+
+networks:
+  proxy_net:
+    internal: true

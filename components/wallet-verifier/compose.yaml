@@ -1,0 +1,44 @@
+---
+services:
+  wallet-verifier:
+    # image: wallet-enterprise-verifier:${WWALLET_VERIFIER_TAG:-v0.2.9}
+    build:
+      context: https://github.com/Didr/wallet-ecosystem.git#temp-fixes
+      #context: ../../build/wallet-ecosystem
+      dockerfile: docker/wallet-enterprise-verifier.Dockerfile
+    restart: always
+    volumes:
+      - ./keys:/app/keys:rw # FIXME: verifier doesn't start without it, but is it necessary?
+      - ./config.template.js:/app/dist/config/index.js
+    ports:
+      - 127.0.0.1:8004:8004
+    depends_on:
+      wallet-verifier_db:
+        condition: service_healthy
+    networks:
+      - wallet-verifier_db_net
+
+  wallet-verifier_db:
+    image: mariadb:lts
+    environment:
+      - MARIADB_DATABASE=${WALLET_VERIFIER_DATABASE:-verifier}
+      - MARIADB_USER=${WALLET_VERIFIER_USER:-wallet}
+      - MARIADB_PASSWORD=${WALLET_VERIFIER_PASSWORD:-wallet}
+      - MARIADB_RANDOM_ROOT_PASSWORD=${WALLET_VERIFIER_RANDOM_ROOT_PASSWORD:-1}
+    volumes:
+      - wallet-verifier_db:/var/lib/mysql
+    networks:
+      - wallet-verifier_db_net
+    healthcheck: # https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/installing-mariadb/binary-packages/automated-mariadb-deployment-and-administration/docker-and-mariadb/using-healthcheck-sh
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  wallet-verifier_db:
+
+networks:
+  wallet-verifier_db_net:
+    internal: true

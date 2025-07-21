@@ -1,0 +1,31 @@
+---
+services:
+  caddy:
+    image: caddy:latest
+    restart: always
+    environment:
+      - WALLET_CADDY_FQDN=${WALLET_CADDY_FQDN:-localhost}
+      - WALLET_CADDY_FRONTEND_FQDN=${WALLET_CADDY_FRONTEND_FQDN:-frontend.localhost}
+      - WALLET_CADDY_BACKEND_FQDN=${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}
+      - WALLET_CADDY_ISSUER_FQDN=${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}
+      - WALLET_CADDY_VERIFIER_FQDN=${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:443:443/udp"
+    volumes:
+      - ./config:/etc/caddy
+      - caddy_data:/data
+      # - caddy_api_config:/config # used for the caddy API
+    # develop:
+    #   watch:
+    #     - path: ./config
+    #       action: sync+exec
+    #       target: /etc/caddy
+    #       exec:
+    #         command: caddy reload --config /etc/caddy/Caddyfile
+
+volumes:
+  caddy_data:

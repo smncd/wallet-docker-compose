@@ -1,0 +1,12 @@
+---
+#name: wwwallet
+
+include:
+  - path: ./components/caddy/compose.yaml
+  - path: ./components/wallet-frontend/compose.yaml
+  - path: ./components/wallet-backend/compose.yaml
+  - path: ./components/wallet-issuer/compose.yaml
+  - path: ./components/wallet-verifier/compose.yaml
+  
+
+

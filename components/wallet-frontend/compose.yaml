@@ -1,0 +1,20 @@
+---
+services:
+  wallet-frontend:
+    # image: wallet-frontend:${WWALLET_FRONTEND_TAG:-v0.2.9}
+    build:
+      # https://docs.docker.com/build/concepts/context/#git-repositories
+      context: https://github.com/Didr/wallet-frontend.git#dockerfile-secret-env
+      # context: https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
+      # context: ../../build/wallet-frontend
+      dockerfile: Dockerfile
+      # Note that changing the contents of a secret does not invalidate the docker build cache?
+      secrets:
+        - wallet_frontend_envfile
+    restart: always
+    ports:
+      - 127.0.0.1:3000:3000
+
+secrets:
+  wallet_frontend_envfile:
+    file: .env

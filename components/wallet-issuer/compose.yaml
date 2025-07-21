@@ -1,0 +1,45 @@
+---
+services:
+  wallet-issuer:
+    # image: wallet-enterprise-issuer:${WWALLET_ISSUER_TAG:-v0.2.9}
+    build:
+      context: https://github.com/Didr/wallet-ecosystem.git#temp-fixes
+      #context: ../../build/wallet-ecosystem
+      dockerfile: docker/wallet-enterprise-issuer.Dockerfile
+    restart: always
+    volumes:
+      - ./dataset:/app/dataset:rw
+      - ./keys:/app/keys:rw
+      - ./config.js:/app/dist/config/index.js
+    ports:
+      - 127.0.0.1:8003:8003
+    depends_on:
+      wallet-issuer_db:
+        condition: service_healthy
+    networks:
+      - wallet-issuer_db_net
+
+  wallet-issuer_db:
+    image: mariadb:lts
+    environment:
+      - MARIADB_DATABASE=${WALLET_ISSUER_DATABASE:-issuer}
+      - MARIADB_USER=${WALLET_ISSUER_USER:-wallet}
+      - MARIADB_PASSWORD=${WALLET_ISSUER_PASSWORD:-wallet}
+      - MARIADB_RANDOM_ROOT_PASSWORD=${WALLET_ISSUER_RANDOM_ROOT_PASSWORD:-1}
+    volumes:
+      - wallet-issuer_db:/var/lib/mysql
+    networks:
+      - wallet-issuer_db_net
+    healthcheck: # https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/installing-mariadb/binary-packages/automated-mariadb-deployment-and-administration/docker-and-mariadb/using-healthcheck-sh
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  wallet-issuer_db:
+
+networks:
+  wallet-issuer_db_net:
+    internal: true
