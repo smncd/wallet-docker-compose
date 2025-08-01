@@ -3,7 +3,8 @@ services:
   wallet-backend:
     # image: wallet-backend-server:${WWALLET_BACKEND_TAG:-v0.2.9}
     build:
-      context: https://github.com/Didr/wallet-backend-server.git#allow-envvar-config
+      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-backend-server.git#allow-envvar-config}
+      # context: https://github.com/Didr/wallet-backend-server.git#allow-envvar-config
       # https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
       # context: build/wallet-backend-server
       dockerfile: Dockerfile
@@ -17,6 +18,7 @@ services:
       wallet-backend_db:
         condition: service_healthy
     networks:
+      - default # wallet-backend proxies connections for users, so it needs access to all issuers
       - wallet-backend_db_net
     healthcheck:
       test: ["CMD", "python3", "-c", "import http.client, json; conn = http.client.HTTPConnection('localhost', 8002); conn.request('GET', '/status'); res = conn.getresponse(); data = res.read().decode(); print(data); exit(0 if json.loads(data)['status'] == 'ok' else 1)"]

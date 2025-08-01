@@ -4,7 +4,7 @@ services:
     # image: wallet-frontend:${WWALLET_FRONTEND_TAG:-v0.2.9}
     build:
       # https://docs.docker.com/build/concepts/context/#git-repositories
-      context: https://github.com/Didr/wallet-frontend.git#dockerfile-secret-env
+      context: ${WALLET_FRONTEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-frontend.git#dockerfile-secret-env}
       # context: https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
       # context: ../../build/wallet-frontend
       dockerfile: Dockerfile

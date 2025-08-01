@@ -3,19 +3,20 @@ services:
   wallet-verifier:
     # image: wallet-enterprise-verifier:${WWALLET_VERIFIER_TAG:-v0.2.9}
     build:
-      context: https://github.com/Didr/wallet-ecosystem.git#temp-fixes
+      context: ${WALLET_VERIFIER_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#temp-fixes}
       #context: ../../build/wallet-ecosystem
       dockerfile: docker/wallet-enterprise-verifier.Dockerfile
     restart: always
     volumes:
       - ./keys:/app/keys:rw # FIXME: verifier doesn't start without it, but is it necessary?
-      - ./config.template.js:/app/dist/config/index.js
+      - ./config.js:/app/dist/config/index.js
     ports:
       - 127.0.0.1:8004:8004
     depends_on:
       wallet-verifier_db:
         condition: service_healthy
     networks:
+      - default
       - wallet-verifier_db_net
 
   wallet-verifier_db:
