@@ -6,7 +6,9 @@ This project uses a **modular Docker Compose setup** to orchestrate the wwWallet
 * [wallet-issuer](https://github.com/wwWallet/wallet-ecosystem/)
 * [wallet-verifier](https://github.com/wwWallet/wallet-ecosystem/)
 * [Caddy reverse proxy](https://hub.docker.com/_/caddy)
+
 The configuration is split into a main compose file and an override file to support different environments. The compose files use modern features, so make sure you are running Compose v2+. Podman (with docker-compose-v2) is untested.  
+
 The wwWallet components *should* be Git submodules and code owners of those modules *should* co-ordinate with this repository to keep environment variables and versions updated. Let's help each other.  
 
 If any Docker Compose feature is confusing, please see the links in the Reference section. There are also a lot of tips and trick in the Docker Compose documentation that can be handy.
@@ -99,4 +101,4 @@ docker compose -f compose.yaml -f compose.prod.yaml up -d
 Together we can make this Docker Compose project modular and easy to use: 
 - Submit PRs with different overrides that fit your needs.
 - Clarify and update the documentation 
-If you ever get stuck or find anything confusing, ask for any of the Ops people in the wwWallet Slack.
+If you ever get stuck or find anything confusing. Don't hesitate to ask for help from of the Ops people in the wwWallet Slack.
