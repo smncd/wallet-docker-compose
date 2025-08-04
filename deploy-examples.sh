@@ -4,6 +4,7 @@ SCRIPT_DIR=$(dirname "$0")
 
 ###
 # This script is used to deploy the example configurations for the entire wallet ecosystem
+# Use `git clean -Xdi` to clean up the examples
 ###
 
 ## Copy examples to the correct location, by removing the .example extension on copy
