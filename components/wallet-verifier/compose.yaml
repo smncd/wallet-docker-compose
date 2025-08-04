@@ -3,7 +3,7 @@ services:
   wallet-verifier:
     # image: wallet-enterprise-verifier:${WWALLET_VERIFIER_TAG:-v0.2.9}
     build:
-      context: ${WALLET_VERIFIER_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#temp-fixes}
+      context: ${WALLET_VERIFIER_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#bbs-arkg-prod-fixes}
       #context: ../../build/wallet-ecosystem
       dockerfile: docker/wallet-enterprise-verifier.Dockerfile
     restart: always
