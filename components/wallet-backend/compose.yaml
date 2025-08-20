@@ -3,10 +3,7 @@ services:
   wallet-backend:
     # image: wallet-backend-server:${WWALLET_BACKEND_TAG:-v0.2.9}
     build:
-      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#bbs-arkg-prod-fixes:wallet-backend-server}
-      # context: https://github.com/Didr/wallet-backend-server.git#allow-envvar-config
-      # https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
-      # context: build/wallet-backend-server
+      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#f39dd39b8443ed8b2632ccb9e2fcb1d73b093c78}
       dockerfile: Dockerfile
     restart: always
     volumes:
