@@ -3,7 +3,7 @@
 #        debug
 #}
 
-{$WALLET_CADDY_FQDN} {
+{$WALLET_CADDY_FRONTEND_FQDN} {
     #log stdout
     handle_path /backend/* {
         reverse_proxy wallet-backend:8002
@@ -11,13 +11,14 @@
     reverse_proxy wallet-frontend:80 # port 3000 while in dev?
 }
 
-{$WALLET_CADDY_FRONTEND_FQDN} {
-     reverse_proxy wallet-frontend:80 # port 3000 while in dev?
-}
+### 
+# If you're using these, make sure to double check the URLs in the configs,
+# Default behavior is that backend is at a subpath of the frontend
 
 {$WALLET_CADDY_BACKEND_FQDN} { 
         reverse_proxy wallet-backend:8002
 }
+###
 
 {$WALLET_CADDY_ISSUER_FQDN} { 
         reverse_proxy wallet-issuer:8003
