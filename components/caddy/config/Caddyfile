@@ -9,6 +9,7 @@
         reverse_proxy wallet-backend:8002
     }
     reverse_proxy wallet-frontend:80 # port 3000 while in dev?
+    encode
 }
 
 ### 
@@ -17,13 +18,16 @@
 
 {$WALLET_CADDY_BACKEND_FQDN} { 
         reverse_proxy wallet-backend:8002
+        encode
 }
 ###
 
 {$WALLET_CADDY_ISSUER_FQDN} { 
         reverse_proxy wallet-issuer:8003
+        encode
 }
 
 {$WALLET_CADDY_VERIFIER_FQDN} { 
         reverse_proxy wallet-verifier:8005
+        encode
 }
