@@ -82,6 +82,8 @@ docker compose -f compose.yaml -f compose.prod.yaml up -d
   Because of the way the "include" feature works, these will only work on anything that is inside the file it is defined in.
 - **My linter/IDE is really angry with this YAML!:**  
   Some of the features used (`!override`) haven't been added to the linters yet. At the time of writing, [VSCode for example](https://github.com/microsoft/vscode-docker/issues/4523). Use `docker compose config` and `docker compose up --dry-run` to verify it yourself.
+- **I don't understand why I'm getting this error while building the docker images!:**
+  If you're getting errors that you think you shouldn't or doesn't make sense, you probably want to try running with the `--no-cache` flag, or clearing your docker build cache: `docker buildx prune`.
 
 ---
 
