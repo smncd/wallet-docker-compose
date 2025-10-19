@@ -18,8 +18,8 @@ services:
       - default # wallet-backend proxies connections for users, so it needs access to all issuers
       - wallet-backend_db_net
     healthcheck:
-      test: ["CMD", "python3", "-c", "import http.client, json; conn = http.client.HTTPConnection('localhost', 8002); conn.request('GET', '/status'); res = conn.getresponse(); data = res.read().decode(); print(data); exit(0 if json.loads(data)['status'] == 'ok' else 1)"]
-      interval: 30s
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8002; echo -e 'GET /status HTTP/1.1\r\nConnection: close\r\n\r\n' >&3; cat <&3 | grep 'ok'"]
+      interval: 10s
       start_period: 10s
       timeout: 5s
       retries: 3
