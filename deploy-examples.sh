@@ -17,6 +17,10 @@ copy_examples() {
     done
 }
 
+## Deploy .env override
+OVERRIDE_EXAMPLES=".env.example"
+copy_examples ".." "$OVERRIDE_EXAMPLES"
+
 ## Deploy for caddy
 CADDY_EXAMPLES=".env.example"
 copy_examples "caddy" "$CADDY_EXAMPLES"
