@@ -1,0 +1,50 @@
+services:
+
+  wallet-backend-db-metrics: &x-mysql-query-exporter
+    image: mysql-query-exporter:latest
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9404:9404"
+    depends_on:
+      wallet-backend_db:
+        condition: service_healthy
+    environment:
+      - CONFIG_FILE=/config.wallet-backend.yaml
+      - DB_HOST=wallet-backend_db
+      - DB_USER=${WALLET_BACKEND_USER:-wallet}
+      - DB_PASSWORD=${WALLET_BACKEND_PASSWORD:-wallet}
+      - DB_NAME=${WALLET_BACKEND_DATABASE:-wallet}
+    networks:
+      - wallet-backend_db_net
+  wallet-issuer-db-metrics:
+    <<: *x-mysql-query-exporter
+    ports:
+      - "127.0.0.1:9405:9404"
+    depends_on:
+      wallet-issuer_db:
+        condition: service_healthy
+    environment:
+      - CONFIG_FILE=/config.wallet-issuer.yaml
+      - DB_HOST=wallet-issuer_db
+      - DB_USER=${WALLET_ISSUER_USER:-wallet}
+      - DB_PASSWORD=${WALLET_ISSUER_PASSWORD:-wallet}
+      - DB_NAME=${WALLET_ISSUER_DATABASE:-issuer}
+    networks:
+      - wallet-issuer_db_net
+
+  wallet-verifier-db-metrics:
+    <<: *x-mysql-query-exporter
+    ports:
+      - "127.0.0.1:9406:9404"
+    depends_on:
+      wallet-verifier_db:
+        condition: service_healthy
+    environment:
+      - CONFIG_FILE=/config.wallet-verifier.yaml
+      - DB_HOST=wallet-verifier_db
+      - DB_USER=${WALLET_VERIFIER_USER:-wallet}
+      - DB_PASSWORD=${WALLET_VERIFIER_PASSWORD:-wallet}
+      - DB_NAME=${WALLET_VERIFIER_DATABASE:-verifier}
+    networks:
+      - wallet-verifier_db_net

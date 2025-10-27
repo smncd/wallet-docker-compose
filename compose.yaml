@@ -7,6 +7,7 @@ include:
   - path: ./components/wallet-backend/compose.yaml
   - path: ./components/wallet-issuer/compose.yaml
   - path: ./components/wallet-verifier/compose.yaml
-  
+  - path: ./components/wallet-exporters/mysql-query-export.yaml
+  - path: ./components/wallet-exporters/mysqld-exporter.yaml
 
 
