@@ -1,0 +1,66 @@
+---
+services:
+  caddy:
+    ports: !override
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    networks:
+      default:
+      proxy_net:
+        aliases: # without this, the services will not be able to resolve each other by name
+          - "${WALLET_CADDY_FRONTEND_FQDN:-wallet.localhost}"
+          - "${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}"
+          - "${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}"
+          - "${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}"
+
+  wallet-frontend:
+    networks:
+      - proxy_net
+  wallet-backend:
+    networks:
+      - proxy_net
+
+  wallet-issuer:
+    networks:
+      - proxy_net
+
+  wallet-verifier:
+    networks:
+      - proxy_net
+
+  wallet-backend_db:
+    ports:
+      - "127.0.0.1:3306:3306"
+  wallet-verifier_db:
+    ports:
+      - "127.0.0.1:3307:3306"
+  wallet-issuer_db:
+    ports:
+      - "127.0.0.1:3308:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=wallet-backend_db,wallet-verifier_db,wallet-issuer_db
+      - PMA_SSLS="0,0,0"
+      - PMA_USER=wallet
+      - PMA_PASSWORD=wallet
+    ports:
+      - "127.0.0.1:8080:80"
+    networks:
+      - default
+      - wallet-backend_db_net
+      - wallet-verifier_db_net
+      - wallet-issuer_db_net
+
+networks:
+  proxy_net:
+    internal: false
+  wallet-backend_db_net:
+    internal: false
+  wallet-verifier_db_net:
+    internal: false
+  wallet-issuer_db_net:
+    internal: false

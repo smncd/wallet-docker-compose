@@ -1,5 +1,20 @@
 # wwWallet-stack Docker Compose
 
+## TL;DR - for dev
+```bash
+./deploy-examples.sh
+docker compose -f compose.yaml -f compose.override.dev.yaml up
+```
+URLs:
+- **frontend**: http://wallet.localhost
+- **backend**: http://backend.localhost
+- **issuer**: http://issuer.localhost
+- **verifier**: http://verifier.localhost
+- **phpymyadmin**: http://localhost:8080
+
+
+## Overview
+
 This project uses a **modular Docker Compose setup** to orchestrate the wwWallet components: 
 * [wallet-frontend](https://github.com/wwWallet/wallet-frontend/)
 * [wallet-backend](https://github.com/wwwallet/wallet-backend-server/)
@@ -22,6 +37,9 @@ If any Docker Compose feature is confusing, please see the links in the Referenc
 
 - **`compose.override.yaml`**  
   An (optional) override file. This is automatically picked up by Docker Compose and allows you to customize or override settings (e.g., ports, networks) for local development or specific environments. 
+
+- **`compose.override.dev.yaml`**  
+  An (optional) override file. This is NOT automatically picked up by Docker Compose and needs to be manually specified. This file has curated settings and tools to assist in development. 
 
 - **`.env.template`**  
   An .env template to override environment variables and .env files in the (compose) services. The template *should* include all relevant environment variables in the components.

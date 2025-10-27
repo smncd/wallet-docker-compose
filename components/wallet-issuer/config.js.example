@@ -1,6 +1,6 @@
 
 export const config = {
-	url: "https://issuer.localhost",
+	url: "http://issuer.localhost",
 	port: "8003",
 	appSecret: "dsfkwfkwfwdfdsfSaSe2e34r4frwr42rAFdsf2lfmfsmklfwmer",
 	db: {
@@ -13,7 +13,7 @@ export const config = {
 	display: [
 		{
 			name: "wwWallet Issuer",
-			logo: { uri: "https://issuer.localhost/images/logo.png" },
+			logo: { uri: "http://issuer.localhost/images/logo.png" },
 			locale: "en-US"
 		}
 	],
@@ -28,7 +28,7 @@ export const config = {
 		response_mode: "direct_post.jwt"
 	},
 	appType: 'ISSUER', //ISSUER,VERIFIER
-	wwwalletURL: "https://frontend.localhost/cb",
+	wwwalletURL: "http://wallet.localhost/cb",
 	trustedRootCertificates: [
 		`-----BEGIN CERTIFICATE-----
 MIICQDCCAeegAwIBAgIUa5v+g+yHrVdDFEfRy8GyoGtcT4YwCgYIKoZIzj0EAwIw
@@ -47,7 +47,7 @@ L3rT4w==
 -----END CERTIFICATE-----`
 	],
 	trustedIssuers: [
-		"https://issuer.localhost"
+		"http://issuer.localhost"
 	],
 	clockTolerance: 60,
 	siteConfig: {

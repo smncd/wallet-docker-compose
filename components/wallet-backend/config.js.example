@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = void 0;
 exports.config = {
-	url: "http://localhost:8002",
+	url: "http://backend.localhost",
 	port: "8002",
 	appSecret: "öoisuhdhayuhgwyugus",
 	ssl: "false",
@@ -13,13 +13,13 @@ exports.config = {
 		password: "wallet",
 		dbname: "wallet"
 	},
-	walletClientUrl: "http://localhost:3000/cb",
+	walletClientUrl: "http://wallet.localhost/cb",
 	webauthn: {
 		attestation: "direct",
-		origin: "http://localhost:3000",
+		origin: "http://wallet.localhost",
 		rp: {
-			id: "localhost",
-			name: "wwWallet demo",
+			id: "wallet.localhost",
+			name: "wwWallet localhost",
 		},
 	},
 	alg: "EdDSA",

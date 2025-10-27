@@ -1,16 +1,17 @@
 ---
 services:
   wallet-frontend:
-    # image: wallet-frontend:${WWALLET_FRONTEND_TAG:-v0.2.9}
     build:
-      # https://docs.docker.com/build/concepts/context/#git-repositories
-      context: ${WALLET_FRONTEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-frontend.git#master-20251019-sirosid}
-      # context: https://github.com/wwWallet/wallet-ecosystem#master#wallet-backend-enterprise
-      # context: ../../build/wallet-frontend
+      context: ${WALLET_FRONTEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-frontend.git#master-20251027-sirosid-sunet}
       dockerfile: Dockerfile
-      # Note that changing the contents of a secret does not invalidate the docker build cache?
+      # Note that changing the contents of a secret does not invalidate the docker build cache
+      cache_from:
+        - ghcr.io/sirosfoundation/wallet-frontend/cache:latest
       secrets:
         - wallet_frontend_envfile
+      x-bake:
+        no-cache-filter: # don't use cache for the step with secrets
+          - builder
     restart: always
     ports:
       - 127.0.0.1:3000:3000

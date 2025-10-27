@@ -4,16 +4,18 @@ services:
     image: caddy:latest
     restart: always
     environment:
-      - WALLET_CADDY_FRONTEND_FQDN=${WALLET_CADDY_FRONTEND_FQDN:-localhost}
+      - WALLET_CADDY_FRONTEND_FQDN=${WALLET_CADDY_FRONTEND_FQDN:-wallet.localhost}
       - WALLET_CADDY_BACKEND_FQDN=${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}
       - WALLET_CADDY_ISSUER_FQDN=${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}
       - WALLET_CADDY_VERIFIER_FQDN=${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}
+      - WALLET_CADDY_PROTOCOL=${WALLET_CADDY_PROTOCOL:-http://}
     cap_add:
       - NET_ADMIN
     ports:
       - "127.0.0.1:80:80"
       - "127.0.0.1:443:443"
       - "127.0.0.1:443:443/udp"
+      - "127.0.0.1:9099:9099" # metrics
     volumes:
       - ./config:/etc/caddy
       - caddy_data:/data
