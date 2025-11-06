@@ -12,6 +12,8 @@ services:
       - MYSQLD_EXPORTER_PASSWORD=${WALLET_BACKEND_PASSWORD:-wallet}
     networks:
       - wallet-backend_db_net
+      - metrics_net
+
   wallet-issuer-db-exporter:
     <<: *x-mysqld-exporter
     ports:
@@ -24,6 +26,7 @@ services:
       - MYSQLD_EXPORTER_PASSWORD=${WALLET_ISSUER_PASSWORD:-wallet}
     networks:
       - wallet-issuer_db_net
+      - metrics_net
 
   wallet-verifier-db-exporter:
     <<: *x-mysqld-exporter
@@ -37,3 +40,8 @@ services:
       - MYSQLD_EXPORTER_PASSWORD=${WALLET_VERIFIER_PASSWORD:-wallet}
     networks:
       - wallet-verifier_db_net
+      - metrics_net
+
+networks:
+  metrics_net:
+    internal: true

@@ -1,8 +1,7 @@
 services:
 
   wallet-backend-db-metrics: &x-mysql-query-exporter
-    image: mysql-query-exporter:latest
-    build: .
+    image: ghcr.io/didr/mysql-query-exporter:latest # REPLACEME with https://github.com/albertodonato/query-exporter
     restart: unless-stopped
     ports:
       - "127.0.0.1:9404:9404"
@@ -17,6 +16,8 @@ services:
       - DB_NAME=${WALLET_BACKEND_DATABASE:-wallet}
     networks:
       - wallet-backend_db_net
+      - metrics_net
+
   wallet-issuer-db-metrics:
     <<: *x-mysql-query-exporter
     ports:
@@ -32,6 +33,7 @@ services:
       - DB_NAME=${WALLET_ISSUER_DATABASE:-issuer}
     networks:
       - wallet-issuer_db_net
+      - metrics_net
 
   wallet-verifier-db-metrics:
     <<: *x-mysql-query-exporter
@@ -48,3 +50,8 @@ services:
       - DB_NAME=${WALLET_VERIFIER_DATABASE:-verifier}
     networks:
       - wallet-verifier_db_net
+      - metrics_net
+
+networks:
+  metrics_net:
+    internal: true

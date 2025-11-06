@@ -1,3 +1,9 @@
-http://metrics:9099 {
-    metrics
+http://127.0.0.1:9099 {
+    handle /metrics {
+        metrics
+    }
+    handle /metrics_all {
+        rewrite * /metrics
+        reverse_proxy vector-metrics-scraper:9598
+    }
 }

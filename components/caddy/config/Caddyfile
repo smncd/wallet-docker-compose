@@ -1,3 +1,7 @@
+{
+        metrics
+}
+
 import sites/*
 
 {$WALLET_CADDY_PROTOCOL}{$WALLET_CADDY_FRONTEND_FQDN} {

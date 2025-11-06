@@ -1,0 +1,50 @@
+services:
+  wallet-backend_db_exporter:
+    image: prom/mysqld-exporter:latest
+    restart: unless-stopped
+    depends_on:
+      wallet-backend_db:
+        condition: service_healthy
+    command: ["--mysqld.address=${WALLET_BACKEND_DB_HOST:-wallet-backend_db}:3306", "--mysqld.username=${WALLET_BACKEND_USER:-wallet}"]
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=${WALLET_BACKEND_PASSWORD:-wallet}
+    networks:
+      - wallet-backend_db_net
+      - metrics_net
+
+  wallet-backend_db_query_exporter:
+    image: docker.io/burningalchemist/sql_exporter:0.18
+    restart: unless-stopped
+    networks: 
+      - proxy_net
+      - metrics_net
+    configs:
+      - source: wallet-backend_db_query_exporter
+        target: /sql_exporter.yml
+
+configs:
+  wallet-backend_db_query_exporter:
+    content: |
+      target:
+        name: "wallet-backend_db"
+        collectors: [wallet-backend_db]
+        data_source_name: 'mysql://${WALLET_BACKEND_USER:-wallet}:${WALLET_BACKEND_PASSWORD:-wallet}@${WALLET_BACKEND_DB_HOST:-wallet-backend_db}:3306/${WALLET_BACKEND_DATABASE:-wallet}'
+      collectors:
+        - collector_name: "wallet-backend_db"
+          metrics:
+            - metric_name: "wallet_backend_users"
+              type: gauge
+              help: "Current number of users in the wallet-backend-db"
+              values: [count]
+              query: |
+                "SELECT count(*) as count FROM user"
+            - metric_name: "wallet_backend_webauthn_credentials"
+              type: gauge
+              help: "Number of webauthn credentials in the wallet-backend-db"
+              values: [count]
+              query: |
+                "SELECT count(*) as count FROM webauthn_credential"
+
+networks:
+  metrics_net:
+    internal: true

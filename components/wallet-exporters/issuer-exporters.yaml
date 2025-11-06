@@ -1,0 +1,45 @@
+services:
+  wallet-issuer_db_exporter:
+    image: prom/mysqld-exporter:latest
+    restart: unless-stopped
+    depends_on:
+      wallet-issuer_db:
+        condition: service_healthy
+    command: ["--mysqld.address=${WALLET_ISSUER_DB_HOST:-wallet-issuer_db}:3306", "--mysqld.username=${WALLET_ISSUER_USER:-wallet}"]
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=${WALLET_ISSUER_PASSWORD:-wallet}
+    networks:
+      - wallet-issuer_db_net
+      - metrics_net
+
+  wallet-issuer_db_query_exporter:
+    image: docker.io/burningalchemist/sql_exporter:0.18
+    restart: unless-stopped
+    networks:
+      - proxy_net
+      - metrics_net
+    configs:
+      - source: wallet-issuer_db_query_exporter
+        target: /sql_exporter.yml
+
+configs:
+  wallet-issuer_db_query_exporter:
+    content: |
+      target:
+        name: "wallet-issuer_db"
+        collectors: [wallet-issuer_db]
+        data_source_name: 'mysql://${WALLET_ISSUER_USER:-wallet}:${WALLET_ISSUER_PASSWORD:-wallet}@${WALLET_ISSUER_DB_HOST:-wallet-issuer_db}:3306/${WALLET_ISSUER_DATABASE:-wallet}'
+      collectors:
+        - collector_name: "wallet-issuer_db"
+          metrics:
+            - metric_name: "wallet_issuer_issued_credentials"
+              type: gauge
+              help: "Current number of issued credentials"
+              values: [count]
+              query: |
+                "SELECT count(*) as count FROM authorization_server_state WHERE client_id IS NOT NULL"
+
+
+networks:
+  metrics_net:
+    internal: true

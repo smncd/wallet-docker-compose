@@ -5,7 +5,7 @@ services:
     build:
       context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#554de6cff1d5a31117f3aa0b7cab12bfb609abf2}
       dockerfile: Dockerfile
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./config.js:/app/dist/config/index.js:ro
       - ./keys:/app/keys:ro
@@ -26,7 +26,7 @@ services:
 
   wallet-backend_db:
     image: mariadb:lts
-    restart: always
+    restart: unless-stopped
     environment:
       - MARIADB_DATABASE=${WALLET_BACKEND_DATABASE:-wallet}
       - MARIADB_USER=${WALLET_BACKEND_USER:-wallet}
@@ -56,13 +56,15 @@ services:
     networks:
       - wallet-backend_db_net
     volumes:
-      - ./init-sql.sh:/init-sql.sh
+      - ./init-sql.sh:/init-sql.sh:ro
     entrypoint: "bash /init-sql.sh" 
     depends_on:
       wallet-backend:
           condition: service_healthy
       wallet-backend_db:
           condition: service_healthy
+    deploy:
+      mode: replicated-job
 
 volumes:
   wallet-backend_db:

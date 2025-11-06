@@ -1,0 +1,45 @@
+services:
+  wallet-verifier_db_exporter:
+    image: prom/mysqld-exporter:latest
+    restart: unless-stopped
+    depends_on:
+      wallet-verifier_db:
+        condition: service_healthy
+    command: ["--mysqld.address=${WALLET_VERIFIER_DB_HOST:-wallet-verifier_db}:3306", "--mysqld.username=${WALLET_VERIFIER_USER:-wallet}"]
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=${WALLET_VERIFIER_PASSWORD:-wallet}
+    networks:
+      - wallet-verifier_db_net
+      - metrics_net
+
+  wallet-verifier_db_query_exporter:
+    image: docker.io/burningalchemist/sql_exporter:0.18
+    restart: unless-stopped
+    networks:
+      - proxy_net
+      - metrics_net
+    configs:
+      - source: wallet-verifier_db_query_exporter
+        target: /sql_exporter.yml
+
+configs:
+  wallet-verifier_db_query_exporter:
+    content: |
+      target:
+        name: "wallet-verifier_db"
+        collectors: [wallet-verifier_db]
+        data_source_name: 'mysql://${WALLET_VERIFIER_USER:-wallet}:${WALLET_VERIFIER_PASSWORD:-wallet}@${WALLET_VERIFIER_DB_HOST:-wallet-verifier_db}:3306/${WALLET_VERIFIER_DATABASE:-wallet}'
+      collectors:
+        - collector_name: "wallet-verifier_db"
+          metrics:
+            - metric_name: "wallet_verifier_completed_verifications"
+              type: gauge
+              help: "Current number of completed verifications"
+              values: [count]
+              query: |
+                "SELECT count(*) as count FROM relying_party_state WHERE completed = 1"
+
+
+networks:
+  metrics_net:
+    internal: true

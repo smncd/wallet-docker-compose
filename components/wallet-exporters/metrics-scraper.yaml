@@ -1,0 +1,33 @@
+services:
+  vector-metrics-scraper:
+    image: docker.io/timberio/vector:0.50.0-distroless-static
+    networks: 
+      - proxy_net
+      - metrics_net
+    configs:
+      - source: vector_conf
+        target: /etc/vector/vector.yaml
+
+configs:
+  vector_conf:
+    content: |
+      sources:
+        scraper:
+          type: prometheus_scrape
+          instance_tag: "instance"
+          endpoints:
+            - http://wallet-backend_db_query_exporter:9404/metrics
+            - http://wallet-issuer_db_query_exporter:9404/metrics
+            - http://wallet-verifier_db_query_exporter:9404/metrics
+            - http://wallet-backend_db_exporter:9104/metrics
+            - http://wallet-issuer_db_exporter:9104/metrics
+            - http://wallet-verifier_db_exporter:9104/metrics
+      sinks:
+        prometheus_exporter:
+          type: prometheus_exporter
+          inputs: [scraper]
+          address: 0.0.0.0:9598
+
+networks:
+  metrics_net:
+    internal: true
