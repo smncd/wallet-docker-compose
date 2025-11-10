@@ -9,9 +9,9 @@ include:
   - path: ./components/wallet-issuer/compose.yaml
   - path: ./components/wallet-verifier/compose.yaml
   # Exporters
-#  - path: ./components/wallet-exporters/backend-exporters.yaml
-#  - path: ./components/wallet-exporters/issuer-exporters.yaml
-#  - path: ./components/wallet-exporters/verifier-exporters.yaml
-#  - path: ./components/wallet-exporters/metrics-scraper.yaml
+  - path: ./components/wallet-exporters/backend-exporters.yaml
+  - path: ./components/wallet-exporters/issuer-exporters.yaml
+  - path: ./components/wallet-exporters/verifier-exporters.yaml
+  - path: ./components/wallet-exporters/metrics-scraper.yaml
 
 
