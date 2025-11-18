@@ -37,7 +37,7 @@ configs:
               help: "Current number of issued credentials"
               values: [count]
               query: |
-                "SELECT count(*) as count FROM authorization_server_state WHERE client_id IS NOT NULL"
+                SELECT count(*) as count FROM authorization_server_state WHERE client_id IS NOT NULL
 
 
 networks:

@@ -37,13 +37,13 @@ configs:
               help: "Current number of users in the wallet-backend-db"
               values: [count]
               query: |
-                "SELECT count(*) as count FROM user"
+                SELECT count(*) as count FROM user
             - metric_name: "wallet_backend_webauthn_credentials"
               type: gauge
               help: "Number of webauthn credentials in the wallet-backend-db"
               values: [count]
               query: |
-                "SELECT count(*) as count FROM webauthn_credential"
+                SELECT count(*) as count FROM webauthn_credential
 
 networks:
   metrics_net:

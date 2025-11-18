@@ -37,7 +37,7 @@ configs:
               help: "Current number of completed verifications"
               values: [count]
               query: |
-                "SELECT count(*) as count FROM relying_party_state WHERE completed = 1"
+                SELECT count(*) as count FROM relying_party_state WHERE completed = 1
 
 
 networks:

@@ -1,4 +1,4 @@
-http://0.0.0.0:9099 {
+:9099 {
     handle /metrics {
         metrics
     }
