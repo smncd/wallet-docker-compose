@@ -16,7 +16,7 @@ services:
     image: docker.io/burningalchemist/sql_exporter:0.18
     restart: unless-stopped
     networks:
-      - proxy_net
+      - wallet-issuer_db_net
       - metrics_net
     configs:
       - source: wallet-issuer_db_query_exporter

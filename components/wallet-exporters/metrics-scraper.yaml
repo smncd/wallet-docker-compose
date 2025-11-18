@@ -16,9 +16,9 @@ configs:
           type: prometheus_scrape
           instance_tag: "instance"
           endpoints:
-            - http://wallet-backend_db_query_exporter:9404/metrics
-            - http://wallet-issuer_db_query_exporter:9404/metrics
-            - http://wallet-verifier_db_query_exporter:9404/metrics
+            - http://wallet-backend_db_query_exporter:9399/metrics
+            - http://wallet-issuer_db_query_exporter:9399/metrics
+            - http://wallet-verifier_db_query_exporter:9399/metrics
             - http://wallet-backend_db_exporter:9104/metrics
             - http://wallet-issuer_db_exporter:9104/metrics
             - http://wallet-verifier_db_exporter:9104/metrics
