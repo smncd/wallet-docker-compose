@@ -1,17 +1,4 @@
 services:
-  wallet-issuer_db_exporter:
-    image: prom/mysqld-exporter:latest
-    restart: unless-stopped
-    depends_on:
-      wallet-issuer_db:
-        condition: service_healthy
-    command: ["--mysqld.address=${WALLET_ISSUER_DB_HOST:-wallet-issuer_db}:3306", "--mysqld.username=${WALLET_ISSUER_USER:-wallet}"]
-    environment:
-      - MYSQLD_EXPORTER_PASSWORD=${WALLET_ISSUER_PASSWORD:-wallet}
-    networks:
-      - wallet-issuer_db_net
-      - metrics_net
-
   wallet-issuer_db_query_exporter:
     image: docker.io/burningalchemist/sql_exporter:0.18
     restart: unless-stopped
