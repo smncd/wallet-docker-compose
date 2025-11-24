@@ -2,7 +2,7 @@
 services:
   wallet-frontend:
     build:
-      context: ${WALLET_FRONTEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-frontend.git#master-20251027-sirosid-sunet}
+      context: ${WALLET_FRONTEND_BUILD_CONTEXT:-https://github.com/Didr/wallet-frontend.git#master-20251019-sirosid}
       dockerfile: Dockerfile
       # Note that changing the contents of a secret does not invalidate the docker build cache
       cache_from:
