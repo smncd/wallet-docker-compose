@@ -3,7 +3,7 @@ services:
   wallet-verifier:
     image: ghcr.io/wwwallet/wallet-enterprise-verifier:${WWALLET_VERIFIER_TAG:-v0.4.0}
     build:
-      context: ${WALLET_VERIFIER_BUILD_CONTEXT:-https://github.com/wwWallet/wallet-ecosystem.git#v0.4.0}
+      context: ${WALLET_VERIFIER_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#master-20251209-sirosid}
       dockerfile: docker/wallet-enterprise-verifier.Dockerfile
     restart: always
     volumes:
