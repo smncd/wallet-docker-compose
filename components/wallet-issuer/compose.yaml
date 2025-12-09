@@ -1,9 +1,9 @@
 ---
 services:
   wallet-issuer:
-    # image: wallet-enterprise-issuer:${WWALLET_ISSUER_TAG:-v0.2.9}
+    image: ghcr.io/wwwallet/wallet-enterprise-issuer:${WWALLET_ISSUER_TAG:-v0.4.0}
     build:
-      context: ${WALLET_ISSUER_BUILD_CONTEXT:-https://github.com/Didr/wallet-ecosystem.git#master-20251019-sirosid}
+      context: ${WALLET_ISSUER_BUILD_CONTEXT:-https://github.com/wwWallet/wallet-ecosystem.git#v0.4.0}
       dockerfile: docker/wallet-enterprise-issuer.Dockerfile
     restart: always
     volumes:
