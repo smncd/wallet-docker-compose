@@ -61,8 +61,6 @@ services:
       - ./init-sql.sh:/init-sql.sh:ro
     entrypoint: "bash /init-sql.sh" 
     depends_on:
-      wallet-backend:
-          condition: service_healthy
       wallet-backend_db:
           condition: service_healthy
     deploy:
