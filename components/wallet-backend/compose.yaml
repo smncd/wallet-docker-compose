@@ -1,10 +1,10 @@
 ---
 services:
   wallet-backend:
-    # image: wallet-backend-server:${WWALLET_BACKEND_TAG:-v0.2.9}
-    build:
-      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#554de6cff1d5a31117f3aa0b7cab12bfb609abf2}
-      dockerfile: Dockerfile
+    image: ghcr.io/wwwallet/wallet-backend-server:${WALLET_BACKEND_TAG:-v0.4.0}
+#    build:
+#      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#554de6cff1d5a31117f3aa0b7cab12bfb609abf2}
+#      dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
       - ./config.js:/app/dist/config/index.js:ro
@@ -14,6 +14,8 @@ services:
     depends_on:
       wallet-backend_db:
         condition: service_healthy
+      wallet-backend_db_inject_verifier_issuer:
+        condition: service_completed_successfully
     networks:
       - default # wallet-backend proxies connections for users, so it needs access to all issuers
       - wallet-backend_db_net
