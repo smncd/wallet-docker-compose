@@ -40,3 +40,7 @@ copy_examples "wallet-issuer" "$WALLET_ISSUER_EXAMPLES"
 ## Deploy for wallet-verifier
 WALLET_VERIFIER_EXAMPLES=".env.example config.js.example keys.example"
 copy_examples "wallet-verifier" "$WALLET_VERIFIER_EXAMPLES"
+
+docker compose up wallet-backend wallet-backend_db -d --no-deps
+docker compose exec wallet-backend yarn migration:run:prod
+docker compose down wallet-backend wallet-backend_db
