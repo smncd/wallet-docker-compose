@@ -4,22 +4,22 @@
 
 import sites/*
 
-{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_FRONTEND_FQDN} {
+{$WALLET_CADDY_PROTOCOL}{$WALLET_CADDY_FRONTEND_FQDN} {
     reverse_proxy wallet-frontend:80
     encode
 }
 
-{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_BACKEND_FQDN} { 
+{$WALLET_CADDY_PROTOCOL}{$WALLET_CADDY_BACKEND_FQDN} { 
         reverse_proxy wallet-backend:8002
         encode
 }
 
-{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_ISSUER_FQDN} { 
+{$WALLET_CADDY_PROTOCOL}{$WALLET_CADDY_ISSUER_FQDN} { 
         reverse_proxy wallet-issuer:8003
         encode
 }
 
-{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_VERIFIER_FQDN} { 
+{$WALLET_CADDY_PROTOCOL}{$WALLET_CADDY_VERIFIER_FQDN} { 
         reverse_proxy wallet-verifier:8005
         encode
 }
