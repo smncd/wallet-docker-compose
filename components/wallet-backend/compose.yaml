@@ -1,10 +1,10 @@
 ---
 services:
   wallet-backend:
-#    image: ghcr.io/wwwallet/wallet-backend-server:${WALLET_BACKEND_TAG:-v0.4.0}
-    build:
-      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#b0848c9c5f59dfedcdeb0c8ffd57cb7a7d2fb3a0}
-      dockerfile: Dockerfile
+    image: ghcr.io/wwwallet/wallet-backend-server:${WWALLET_BACKEND_TAG:-v0.4.4}
+#    build:
+#      context: ${WALLET_BACKEND_BUILD_CONTEXT:-https://github.com/wwwallet/wallet-backend-server.git#554de6cff1d5a31117f3aa0b7cab12bfb609abf2}
+#      dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
       - ./config.js:/app/dist/config/index.js:ro
