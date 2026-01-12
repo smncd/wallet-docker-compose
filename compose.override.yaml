@@ -7,8 +7,13 @@ services:
       - "443:443/udp"
       - "127.0.0.1:9099:9099" # metrics
     networks:
-      - default
-      - proxy_net
+      default:
+      proxy_net:
+        aliases: # without this, the services will not be able to resolve each other by name
+          - "${WALLET_CADDY_FRONTEND_FQDN:-wallet.localhost}"
+          - "${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}"
+          - "${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}"
+          - "${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}"
 
   wallet-frontend:
     networks:
