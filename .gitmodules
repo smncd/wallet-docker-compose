@@ -1,0 +1,6 @@
+[submodule "components/wwwallet-core"]
+	path = components/wwwallet-core
+	url = ../../sirosfoundation/wwwallet-core.git
+[submodule "components/go-wallet-backend"]
+	path = components/go-wallet-backend
+	url = ../../sirosfoundation/go-wallet-backend.git

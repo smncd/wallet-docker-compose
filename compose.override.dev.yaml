@@ -11,11 +11,14 @@ services:
           - "${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}"
           - "${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}"
           - "${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}"
+          - "${WALLET_CADDY_CORE_FQDN:-core.localhost}"
+          - "${WALLET_CADDY_GOBACKEND_FQDN:-gobackend.localhost}"
 
   wallet-frontend:
     networks:
       - proxy_net
   wallet-backend:
+    profiles: ["backend"]
     networks:
       - proxy_net
 
@@ -24,6 +27,17 @@ services:
       - proxy_net
 
   wallet-verifier:
+    networks:
+      - proxy_net
+
+  wwwallet-issuer-poc:
+    networks:
+      - proxy_net
+  k6:
+    scale: 0 # disable k6
+
+  go-wallet-backend:
+    profiles: ["go-backend"]
     networks:
       - proxy_net
 

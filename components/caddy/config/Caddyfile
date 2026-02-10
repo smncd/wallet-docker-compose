@@ -10,7 +10,14 @@ import sites/*
 }
 
 {$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_BACKEND_FQDN} { 
-        reverse_proxy wallet-backend:8002
+        reverse_proxy wallet-backend:8002 go-wallet-backend:8080 {
+                health_uri /status
+        }
+        encode
+}
+
+{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_GOBACKEND_FQDN} { 
+        reverse_proxy go-wallet-backend:8080
         encode
 }
 
@@ -21,5 +28,10 @@ import sites/*
 
 {$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_VERIFIER_FQDN} { 
         reverse_proxy wallet-verifier:8005
+        encode
+}
+
+{$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_CORE_FQDN} { 
+        reverse_proxy wwwallet-issuer-poc:5000
         encode
 }

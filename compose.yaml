@@ -8,6 +8,8 @@ include:
   - path: ./components/wallet-backend/compose.yaml
   - path: ./components/wallet-issuer/compose.yaml
   - path: ./components/wallet-verifier/compose.yaml
+  - path: ./components/wwwallet-core/compose.yml
+  - path: ./components/go-wallet-backend/compose.yaml
   # Exporters
   - path: ./components/wallet-exporters/backend-exporters.yaml
   - path: ./components/wallet-exporters/issuer-exporters.yaml

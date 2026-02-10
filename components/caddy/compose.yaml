@@ -8,6 +8,8 @@ services:
       - WALLET_CADDY_BACKEND_FQDN=${WALLET_CADDY_BACKEND_FQDN:-backend.localhost}
       - WALLET_CADDY_ISSUER_FQDN=${WALLET_CADDY_ISSUER_FQDN:-issuer.localhost}
       - WALLET_CADDY_VERIFIER_FQDN=${WALLET_CADDY_VERIFIER_FQDN:-verifier.localhost}
+      - WALLET_CADDY_CORE_FQDN=${WALLET_CADDY_CORE_FQDN:-core.localhost}
+      - WALLET_CADDY_GOBACKEND_FQDN=${WALLET_CADDY_GOBACKEND_FQDN:-gobackend.localhost}
       - WALLET_CADDY_PROTOCOL=${WALLET_CADDY_PROTOCOL:-http://}
     cap_add:
       - NET_ADMIN
