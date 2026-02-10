@@ -1,0 +1,33 @@
+services:
+  go-wallet-backend:
+    # image: ghcr.io/sirosfoundation/go-wallet-backend:b156303
+    build:
+      context: https://github.com/sirosfoundation/go-wallet-backend.git#fix/github-issues
+    restart: always
+    ports:
+      - "127.0.0.1:8010:8080"
+      - "127.0.0.1:8011:8081" # admin port
+    volumes:
+      - "go-wallet-backend_db:/app/wallet.db"
+    environment:
+      - WALLET_SERVER_HOST=${WALLET_SERVER_HOST:-0.0.0.0}
+      - WALLET_SERVER_PORT=${WALLET_SERVER_PORT:-8080}
+      - WALLET_SERVER_RP_ID=${WALLET_SERVER_RP_ID:-wallet.localhost}
+      - WALLET_SERVER_RP_ORIGIN=${WALLET_SERVER_RP_ORIGIN:-http://wallet.localhost}
+      - WALLET_SERVER_RP_NAME=${WALLET_SERVER_RP_NAME:-Go Wallet Backend}
+      - WALLET_SERVER_BASE_URL=${WALLET_SERVER_BASE_URL:-http://gobackend.localhost}
+      - WALLET_SERVER_STORAGE_TYPE=${WALLET_SERVER_STORAGE_TYPE:-sqlite}
+      - WALLET_SERVER_STORAGE_SQLITE_PATH=${WALLET_SERVER_STORAGE_SQLITE_PATH:-wallet.db}
+      - WALLET_SERVER_STORAGE_MONGODB_URI=${WALLET_SERVER_STORAGE_MONGODB_URI:-mongodb://mongodb:27017}
+      - WALLET_SERVER_STORAGE_MONGODB_DATABASE=${WALLET_SERVER_STORAGE_MONGODB_DATABASE:-wallet}
+      - WALLET_SERVER_STORAGE_MONGODB_TIMEOUT=${WALLET_SERVER_STORAGE_MONGODB_TIMEOUT:-10}
+      - WALLET_SERVER_LOGGING_LEVEL=${WALLET_SERVER_LOGGING_LEVEL:-info}
+      - WALLET_SERVER_LOGGING_FORMAT=${WALLET_SERVER_LOGGING_FORMAT:-json}
+      - WALLET_SERVER_JWT_SECRET=${WALLET_SERVER_JWT_SECRET:-change-this-secret-in-production}
+      - WALLET_SERVER_JWT_EXPIRY_HOURS=${WALLET_SERVER_JWT_EXPIRY_HOURS:-24}
+      - WALLET_SERVER_JWT_REFRESH_DAYS=${WALLET_SERVER_JWT_REFRESH_DAYS:-7}
+      - WALLET_SERVER_JWT_ISSUER=${WALLET_SERVER_JWT_ISSUER:-go-wallet-backend}
+      - WALLET_SERVER_ADMIN_TOKEN=${WALLET_SERVER_ADMIN_TOKEN:-change-me-NOW}
+
+volumes:
+  go-wallet-backend_db:
