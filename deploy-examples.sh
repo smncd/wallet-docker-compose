@@ -46,33 +46,33 @@ docker compose exec wallet-backend yarn migration:run:prod
 docker compose down wallet-backend wallet-backend_db
 
 # Configure go-wallet-backend with test tenant, issuer and verifier
-ADMIN_TOKEN="change-me-NOW"
-TENANT='''
-{
-  "id": "acme-corp",
-  "name": "ACME Corporation",
-  "display_name": "ACME Corp Wallet",
-  "enabled": true
-}
-'''
+# ADMIN_TOKEN="change-me-NOW"
+# TENANT='''
+# {
+#   "id": "acme-corp",
+#   "name": "ACME Corporation",
+#   "display_name": "ACME Corp Wallet",
+#   "enabled": true
+# }
+# '''
    
-ISSUER='''
-{
-  "credential_issuer_identifier": "http://issuer.localhost",  
-  "client_id": "CLIENT123",    
-  "visible": true
-}
-'''
+# ISSUER='''
+# {
+#   "credential_issuer_identifier": "http://issuer.localhost",  
+#   "client_id": "CLIENT123",    
+#   "visible": true
+# }
+# '''
    
-VERIFIER='''
-{
-  "name": "University Portal",
-  "url": "http://verifier.localhost"      
-}
-'''
+# VERIFIER='''
+# {
+#   "name": "University Portal",
+#   "url": "http://verifier.localhost"      
+# }
+# '''
 
-docker compose up go-wallet-backend wallet-frontend -d --no-deps
-docker compose exec wallet-frontend curl -d "$TENANT" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants
-docker compose exec wallet-frontend curl -d "$ISSUER" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants/acme-corp/issuers
-docker compose exec wallet-frontend curl -d "$VERIFIER" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants/acme-corp/verifiers
-docker compose down go-wallet-backend wallet-frontend
+# docker compose up go-wallet-backend wallet-frontend -d --no-deps
+# docker compose exec wallet-frontend curl -d "$TENANT" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants
+# docker compose exec wallet-frontend curl -d "$ISSUER" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants/acme-corp/issuers
+# docker compose exec wallet-frontend curl -d "$VERIFIER" -H "Accept: application/json" -H "Authorization: Bearer $ADMIN_TOKEN"  http://go-wallet-backend:8081/admin/tenants/acme-corp/verifiers
+# docker compose down go-wallet-backend wallet-frontend

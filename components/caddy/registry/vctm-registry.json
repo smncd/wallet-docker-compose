@@ -1,0 +1,35 @@
+{
+  "$schema": "https://registry.siros.org/schemas/vctm-registry.json",
+  "name": "DEV Credential Registry",
+  "description": "A public registry of credential metadata for SD-JWT VC, mDOC, and W3C VC ecosystems",
+  "url": "http://registry.localhost",
+  "version": "2.0",
+  "organizations": [
+    {
+      "name": "SUNET",
+      "url": "https://registry.siros.org/SUNET/",
+      "credentials": 1
+    }
+  ],
+  "credentials": [
+    {
+      "vct": "urn:eudi:pid:arf-1.8:1",
+      "name": "PID 1.8",
+      "description": "A verifiable credential for educational identity, based on PID ARF 1.8. Provides identity attributes for students and staff within the education and research sector.",
+      "organization": "SUNET",
+      "formats": {
+        "vctm": {
+          "url": "http://registry.localhost/vctm_pid_arf_1_8.json",
+          "type": "application/json",
+          "spec": "https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/"
+        }
+      },
+      "source": {
+        "repository": "https://github.com/SUNET/vc",
+        "branch": "vctm"
+      }
+    }
+  ],
+  "totalCredentials": 1,
+  "buildTime": "2026-03-03T06:17:29.686Z"
+}

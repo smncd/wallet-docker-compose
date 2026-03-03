@@ -15,7 +15,7 @@ build:
 	docker compose build
 
 up:
-	docker compose up --profile go-backend -d
+	docker compose --profile go-backend up -d
 
 up-node-backend:
 	docker compose up --profile backend -d

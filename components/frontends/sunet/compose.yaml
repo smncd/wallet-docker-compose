@@ -1,0 +1,15 @@
+---
+services:
+  frontend-sunet:
+    image: ghcr.io/sirosfoundation/wallet-frontend:unstable
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./branding:/usr/share/nginx/branding/custom
+    ports:
+      - 127.0.0.1:3002:3000
+
+# secrets:
+#   frontend_sunet_env:
+#     file: .env

@@ -5,13 +5,39 @@
 import sites/*
 
 {$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_FRONTEND_FQDN} {
-    reverse_proxy wallet-frontend:80
+    handle_path /id/sunet* {
+        reverse_proxy frontend-sunet:80
+    }
+
+    handle_path /id/gunet* {
+        reverse_proxy frontend-gunet:80
+    }
+
+    handle /id/* {
+        respond "404 Not Found" 404
+    }
+
+    # All other requests go to the main-app container
+    handle {
+        reverse_proxy frontend-default:80
+    }
     encode
 }
 
+{$WALLET_CADDY_PROTOCOL}://registry.localhost {
+        file_server 
+        root /etc/registry
+}
+
 {$WALLET_CADDY_PROTOCOL}://{$WALLET_CADDY_BACKEND_FQDN} { 
-        reverse_proxy wallet-backend:8002 go-wallet-backend:8080 {
-                health_uri /status
+        handle_path /registry* {
+                reverse_proxy go-wallet-registry:8097
+        }
+
+        handle {
+                reverse_proxy wallet-backend:8002 go-wallet-backend:8080 {
+                        health_uri /status
+                }
         }
         encode
 }

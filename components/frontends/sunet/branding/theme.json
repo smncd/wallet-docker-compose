@@ -1,0 +1,10 @@
+{
+	"$schema": "../.schemas/theme.json",
+	"brand": {
+		"color": "#ca402b",
+		"colorLight": "#D3604E",
+		"colorLighter": "#EAD0CC",
+		"colorDark": "#872B1D",
+		"colorDarker": "#282424"
+	}
+}

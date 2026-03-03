@@ -1,0 +1,13 @@
+---
+services:
+  frontend-default:
+    image: ghcr.io/sirosfoundation/wallet-frontend:unstable
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 127.0.0.1:3001:3000
+
+# secrets:
+#   frontend_default_env:
+#     file: .env

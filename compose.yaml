@@ -4,7 +4,10 @@ name: wwwallet
 include:
   # Services
   - path: ./components/caddy/compose.yaml
-  - path: ./components/wallet-frontend/compose.yaml
+  # - path: ./components/wallet-frontend/compose.yaml
+  - path: ./components/frontends/default/compose.yaml
+  - path: ./components/frontends/sunet/compose.yaml
+  - path: ./components/frontends/gunet/compose.yaml
   - path: ./components/wallet-backend/compose.yaml
   - path: ./components/wallet-issuer/compose.yaml
   - path: ./components/wallet-verifier/compose.yaml
